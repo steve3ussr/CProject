@@ -1,5 +1,8 @@
 #include <stdio.h>
 
+int i = 114514;
+
 void main() {
-    printf("hello world\n");
+    extern int i;
+    printf("hello %d world\n", i);
 }
