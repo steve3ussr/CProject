@@ -294,16 +294,11 @@ void main(void) {
 
 
 
-# C 判断
+# C 判断，if，switch，三元运算符
 
 0和null 都是 False
 
 ``` c
-if (statement)
-{
-    ...
-}
-
 if (statement)
 {
     True
@@ -335,15 +330,23 @@ switch (expression: 常量表达式，必须是一个整型或枚举类型) {
 
 其中break和default是可选的。如果不加break的话，就会继续。
 
+比如在某个case判定后没有break，还会继续执行default的命令。
 
+---
 
-
-
-
-
-
+三元运算符：`expression ? True Statement : False Statement`
 
 # C 循环
+
+
+
+
+
+
+
+
+
+
 
 
 
