@@ -2,7 +2,7 @@
 
 - [ ] C 存储类
 - [ ] 位运算符
-- [ ] switch test
+- [ ] `size_t`
 
 
 
@@ -338,9 +338,45 @@ switch (expression: 常量表达式，必须是一个整型或枚举类型) {
 
 # C 循环
 
+## While
 
+``` c
+while (cond) {
+    statement;
+}
+```
 
+## For
 
+``` c
+for([init];cond;[inc]) {
+    statement;
+}
+```
+
+- `init`部分可以留空（在循环之前就定义），这里允许初始化一个变量用于控制；
+- `cond`作为语句执行的条件；
+- `inc`是循环控制变量的操作，可以为空；
+- **条件也可以置空，此时将默认为True；**
+
+![](https://www.runoob.com/wp-content/uploads/2014/09/69978E61-0BA5-4D66-A115-D3AD15B16F47.jpg)
+
+## Do-While
+
+> 循环控制在最后，所以语句至少执行一次；
+
+``` c
+do {
+    statement
+} while(cond);
+
+```
+
+![](https://www.runoob.com/wp-content/uploads/2014/09/B2FE1EC7-6477-439B-8F50-82D537673799.jpg)
+
+## Break， Continue
+
+`pass`
 
 
 
