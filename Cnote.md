@@ -284,7 +284,7 @@ void main(void) {
 
 ## 指针运算符
 
-`&`返回地址， `*`将指针指向变量
+`&`返回地址， `*`返回地址对应的值。
 
 ## 三元运算符
 
@@ -378,19 +378,135 @@ do {
 
 `pass`
 
-
-
-
-
-
-
-
-
-
-
 # C 函数
 
+> 两种调用：**传值调用**和**引用调用**。
 
+## 函数签名
+
+函数名和参数列表一起构成了函数签名。意味着可以出现参数列表不同但是函数名相同的函数。
+
+## 宏定义简单函数
+
+可用预处理命令`#define`定义简单函数
+
+``` c
+#define  MAX_3(a, b, c) ( ((a > b ? a : b) > c) ? (a > b ? a : b) : c )
+#define  MIN_3(a, b, c) ( ((a < b ? a : b) < c) ? (a < b ? a : b) : c )
+#define  MAX_2(x, y)  ( x> y ? x : y )
+#define  MIN_2(x, y)  ( x< y ? x : y )
+#define  ARR_SIZE(a)  ( sizeof( (a) ) / sizeof( (a[0]) ) )
+#define  MULTIPLE(m, n) ( (m%n == 0)?0:1 )
+#define  AVE_3(a, b, c) (a+b+c)/3
+#define  SUM_3(a, b, c) a+b+c
+#define  SWAP(a, b){int t= a;a=b;b=t;}
+```
+
+
+
+## 调用，传参
+
+``` c
+int max2int(int a, int b) 
+	/* int res = max2int(int 1, int 4); */
+{
+    int res = a >= b ? a : b;
+    return res;
+}
+
+void swap2int(int *p, int *q)
+    /* 
+     int a = 1;
+     int b = 4;
+     swap2int(&a, &b); 
+     */
+{
+    int tmp = *p;
+    *p = *q;
+    *q = tmp;
+}
+```
+
+## 声明
+
+声明时，参数名称可以没有，但是参数类型要有。
+
+`int max(int, int)`
+
+## 内部函数，外部函数
+
+`static`前缀关键字声明该函数为内部函数（又称静态函数），作用域限定为本文件。
+
+`extern`前缀关键字声明该函数为外部函数，可被其他文件调用。
+
+
+
+## 内联函数
+
+对于一些小的频繁调用的简单函数，可以加上`inline`前缀，这样编译时不会将其作为一个函数，而是将其插入到主函数中代替函数调用语句。
+
+简单：
+
+1. 不能递归；
+2. 没有循环、switch等复杂结构，一般就几行；
+
+ `inline`只是建议，不代表编译器一定会这么做。
+
+写法一：
+
+```c
+/* .h */
+int max2int(int a, int b)
+{
+    int res = a >= b ? a : b;
+    return res;
+}
+
+
+/* .c */
+#include ".h"
+void main()
+{
+    extern inline int max2int(int, int);
+    printf("max2int res = %d\n", max2int(x, y));
+}
+```
+
+写法二（*头文件里不加extern会编译不成功，原理不清楚*）：
+
+``` c
+/* .h */
+extern inline int max2int(int a, int b)
+{
+    int res = a >= b ? a : b;
+    return res;
+}
+
+
+/* .c */
+#include ".h"
+void main()
+{
+    int max2int(int, int);
+    printf("max2int res = %d\n", max2int(x, y));
+}
+```
+
+## mian的完整写法
+
+``` c
+int mian(int argc, char *argv[], [char **env])
+{
+    return 0;
+}
+```
+
+主函数可以返回void，但如果有些情况下依赖于进程状态码返回值判断执行是否正常，假如有子进程父进程的话。
+
+- `argc`：argument counter
+- `argv`：argument vector
+- `argv[0]`对应程序的路径全名；
+- `argv[i]`对应字符串；
 
 
 
@@ -415,6 +531,116 @@ do {
 
 
 # C 指针
+
+## Pointer Intro
+
+``` c
+#include <stdio.h>
+
+int main()
+{
+    int a = 114514;
+    int *p = &a;
+    printf("a的地址是: %p\n", &a);
+    printf("指针p的地址是: %p\n", &p);
+    printf("指针p指向的地址是是: %p\n", p);
+    printf("指针p指向的地址里存放的内容是: %d\n", *p);
+    return 0;
+}
+
+a的地址是: 000000000061FE1C
+指针p的地址是: 000000000061FE10
+指针p指向的地址是是: 000000000061FE1C
+指针p指向的地址里存放的内容是: 114514
+```
+
+
+
+![](https://www.runoob.com/wp-content/uploads/2014/09/c-pointer.png)
+
+## Pointer Declaration
+
+`type *pointerName`
+
+指针的类型，和指针内容地址对应的变量类型应该一样，整型指针只能指向整型变量。
+
+## NULL Pointer
+
+在变量声明的时候，如果没有确切的地址可以赋值，为指针变量赋一个 NULL 值是一个良好的编程习惯。赋为 NULL 值的指针被称为**空**指针。
+
+>  NULL 指针是一个定义在标准库中的值为零的常量。
+
+`int *p = NULL;`此时p存放的地址是`0x0`。
+
+> 在大多数的操作系统上，程序不允许访问地址为 0 的内存，因为该内存是操作系统保留的。然而，内存地址 0 有特别重要的意义，它表明该指针不指向一个可访问的内存位置。但按照惯例，如果指针包含空值（零值），则假定它不指向任何东西。
+>
+> 如需检查一个空指针，您可以使用 if 语句，如下所示：
+>
+> `if(p)`True代表非空；
+>
+> `if(!p)`True代表空指针。
+
+## 指针的运算
+
+可以用四种：`++, --, +, -`
+
+这里的加减指的不是内存地址单纯加减1，而是和指针类型相关。`int`占4位，所以会+4；`char`占1位，所以会+1。
+
+递增递减，指向的是下一个元素的存储单元：这在访问数组时很常用。
+
+``` c
+void vectorPointer()
+{
+    int cnt, *ptr, vec[] = {11, 45, 14};
+    ptr = vec;
+    for(cnt=0; cnt<3; cnt++, ptr++)
+    {
+        printf("第 %d 个数字是 %d, 地址是 %p\n", cnt+1, *ptr, ptr); 
+    }
+}
+```
+
+**指针自增写在`printf`里有可能会越界：在某些编译环境下，printf运算顺序从右到左。**
+
+``` c
+int ffg = 0;
+printf("ffg is: %d\n", ffg, ffg++); /* 1 */
+-----------------------------------------------
+int ffg = 0;
+printf("ffg is: %d\n", ffg++); /* 0 */
+```
+
+## 指针的比较
+
+可通过比较内存值，避免越界。
+
+```c
+int cnt, *ptr, vec[] = {11, 45, 14};
+for(cnt=1, ptr=vec;ptr <= &vec[2] ; cnt++, ptr++)
+{
+    printf("第 %d 个数字是 %d, 地址是 %p\n", cnt, *ptr, ptr); 
+}
+```
+
+## 指针数组
+
+`int var[] = {10, 20, 30}`
+
+`int *var[] = {10, 20}`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
