@@ -15,7 +15,7 @@
             "environment": [],          
             "externalConsole": false,    //调试是否显示控制台
             "MIMode": "gdb",            
-            "miDebuggerPath": "D:\\program\\mingw64\\bin\\gdb.exe",    //miDebugger路径
+            "miDebuggerPath": "D:\\mingw64\\bin\\gdb.exe",    //miDebugger路径
             "setupCommands":[
                 {
                     "description": "启动整齐打印",
