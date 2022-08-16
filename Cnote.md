@@ -3,6 +3,8 @@
 - [ ] C 存储类
 - [ ] 位运算符
 - [ ] `size_t`
+- [ ] [指针数组的例子](https://www.runoob.com/cprogramming/c-array-of-pointers.html)
+- [ ] 
 
 
 
@@ -628,7 +630,34 @@ for(cnt=1, ptr=vec;ptr <= &vec[2] ; cnt++, ptr++)
 
 `int *var[] = {10, 20}`
 
+单纯声明：`type *definer[MAX];`——这个数组有MAX个整型指针，每个元素都是指向int的指针。
 
+``` c
+void main()
+{
+    int v[] = {11, 45, 14};
+    int *pv[3];
+
+    for(int i=0; i<3; i++)
+    {
+        pv[i] = &v[i];
+        printf("第%d个元素地址是%p, 内容是%d\n", i, pv[i], *pv[i]);
+    }
+}
+```
+
+> - 指针数组：`int *vec[]`
+> - 数组指针：`int (*vec)[]`
+
+
+
+## 指针的指针
+
+必须通过`int **var`声明；
+
+## 传指针给函数
+
+只要函数声明参数为指针就行：`returnType funcName(argType *argName);`
 
 
 
