@@ -59,6 +59,8 @@ C 程序由各种令牌组成，令牌可以是关键字、标识符、常量、
 
 ### 关键字
 
+
+
 # C 数据类型
 
 | 序号 | 类型与描述                                                   |
@@ -526,6 +528,8 @@ int mian(int argc, char *argv[], [char **env])
 
 # C 数组
 
+> 见C++数组
+
 
 
 
@@ -676,6 +680,8 @@ void main()
 
 > - 指针数组：`int *vec[]`
 > - 数组指针：`int (*vec)[]`
+>
+> > 圆括号比方括号优先级要高，所以在指针数组中，首先认为这是个数组，每个成员是指针；在数组指针中，先认为这是个整型指针，然后才认为这个指针指向数组。
 
 
 
@@ -742,4 +748,67 @@ int main()
 
 
 # C 结构体
+
+结构体像是没有方法，只有属性的类。
+
+## 声明结构
+
+``` c
+struct structName {
+    type attr1;
+    type attr2;
+} [OPTIONAL: instName];
+```
+
+通过`instName.attr`访问
+
+
+
+结构体可以实现含有自己类型**指针**的结构成员：
+
+``` c
+struct Node {
+    int data;
+    struct Node* next;
+};
+```
+
+如果两个结构体互相包含，则需要对其中一个结构体进行不完整声明，如下所示：
+
+``` c
+struct B;    //对结构体B进行不完整声明
+ 
+//结构体A中包含指向结构体B的指针
+struct A
+{
+    struct B *partner;
+    //other members;
+};
+ 
+//结构体B中包含指向结构体A的指针，在A声明完后，B也随之进行声明
+struct B
+{
+    struct A *partner;
+    //other members;
+};
+```
+
+> 结构体不是鸭子类型的。即使两个结构体有相同的成员，但结构体标识符不一样也不能通用。
+
+## 定义实例
+
+`struct structName instName;`用来定义——但是要多写一个`struct`关键字；
+
+所以可以提前定义好：
+
+``` c
+typedef struct {
+    //
+} TYPEMNAME;
+TYPENAME inst;
+```
+
+``` c
+TYPENAME inst = {var1, var2 , ..., varn};
+```
 
