@@ -735,11 +735,42 @@ int main()
 
 # C 函数指针，回调函数
 
+定义函数指针，在使用的时候和直接调用函数等价：`funcReturnType (*p)(int, float...)`，因为标识符就是地址。
 
+**我认为用函数指针代替函数标识符，更加灵活。**
 
+回调函数：在定义形参的时候，有一个是其他函数：
 
+> 以下是一个C++的例子
 
+``` c++
+#include <stdio.h>
 
+void funcAux(int& var) {
+    var += 5;
+}
+
+const int MAX = 6;
+
+void operateLst(int (&aLst)[MAX], int lmt, void (*func)(int &)) {
+    for(int i=0; i<lmt; i++) {
+        int &tmp = aLst[i];
+        func(tmp);
+    }
+}
+
+int main() {
+    int lst[MAX] = {1,1,4,5,1,4};
+    int (&reLst)[MAX] = lst;
+    void (*f)(int &) = &funcAux;
+    operateLst(reLst, MAX, f);
+
+    for(int i=0; i<MAX; i++) {
+        printf("第%d个元素是%d\n", i+1, lst[i]);
+    }
+    return 0;
+}
+```
 
 # C 字符串
 
