@@ -325,7 +325,7 @@ if (statement)
 {
     True
 }
-else if (statem)
+else if (statement)
 {
     something
 }
